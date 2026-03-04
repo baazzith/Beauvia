@@ -80,6 +80,8 @@ function SiteLayout() {
           <NavLink to="/booking">Book Now</NavLink>
         </div>
       </footer>
+
+      <p className="developer-credit">Developed by BASITH ALI</p>
     </div>
   )
 }
