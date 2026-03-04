@@ -677,6 +677,198 @@
   background: rgba(255, 255, 255, 0.96);
 }
 
+.scrollytell-hero {
+  overflow: hidden;
+}
+
+.scrollytell-section {
+  overflow: hidden;
+  perspective: 1200px;
+}
+
+.scrollytell-grid {
+  transform-style: preserve-3d;
+}
+
+.scrollytell-card {
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+}
+
+.scrolly-journey {
+  overflow: visible;
+}
+
+.scrolly-journey-layout {
+  display: grid;
+  grid-template-columns: minmax(290px, 0.78fr) minmax(0, 1.22fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.journey-sticky-panel {
+  position: sticky;
+  top: 114px;
+  display: grid;
+  gap: 18px;
+  padding: 24px;
+  border-radius: 28px;
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.94), rgba(242, 249, 255, 0.94));
+  box-shadow: 0 22px 54px rgba(16, 36, 59, 0.11);
+}
+
+.journey-progress-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.journey-progress-head p {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 0.92rem;
+}
+
+.journey-progress-head strong {
+  letter-spacing: 0.12em;
+  font-size: 0.9rem;
+  color: var(--accent-green);
+}
+
+.journey-progress-track {
+  position: relative;
+  width: 12px;
+  height: 220px;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.13);
+  overflow: hidden;
+}
+
+.journey-progress-fill {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  transform-origin: top center;
+  background: linear-gradient(180deg, #06b6d4, #2563eb);
+}
+
+.journey-active-card {
+  padding: 18px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(37, 99, 235, 0.18);
+}
+
+.journey-active-card h3 {
+  margin: 12px 0 10px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.35rem;
+}
+
+.journey-active-card p {
+  margin: 0;
+  line-height: 1.75;
+  color: var(--text-soft);
+}
+
+.journey-coverage-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.journey-coverage-pills span {
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  background: rgba(255, 255, 255, 0.86);
+  color: var(--text-main);
+  font-size: 0.88rem;
+}
+
+.journey-scroll-stack {
+  display: grid;
+  gap: 20px;
+}
+
+.journey-card {
+  min-height: 58vh;
+  padding: 28px;
+  border-radius: 28px;
+  border: 1px solid var(--border-soft);
+  background: rgba(255, 255, 255, 0.84);
+  backdrop-filter: blur(18px);
+  transition: border-color 220ms ease, box-shadow 220ms ease;
+  display: grid;
+  align-content: start;
+  gap: 14px;
+}
+
+.journey-card.is-active {
+  border-color: rgba(37, 99, 235, 0.3);
+  box-shadow: 0 18px 42px rgba(16, 36, 59, 0.13);
+}
+
+.journey-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.journey-step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 46px;
+  height: 34px;
+  border-radius: 10px;
+  background: rgba(37, 99, 235, 0.13);
+  color: var(--accent-green);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  font-size: 0.82rem;
+}
+
+.journey-tag {
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.journey-card h3 {
+  margin: 0;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  line-height: 1.02;
+}
+
+.journey-card p {
+  margin: 0;
+  line-height: 1.8;
+  color: var(--text-soft);
+  max-width: 60ch;
+}
+
+.journey-inline-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.journey-inline-pills span {
+  padding: 9px 13px;
+  border-radius: 999px;
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  background: rgba(243, 250, 255, 0.9);
+  color: var(--text-main);
+}
+
 .service-tile,
 .experience-panel,
 .glass-form {
@@ -950,6 +1142,10 @@
   gap: 24px;
 }
 
+.scrollytell-section.cta-banner .section-heading {
+  margin-bottom: 0;
+}
+
 @keyframes heroRise {
   from {
     opacity: 0;
@@ -1022,6 +1218,19 @@
 
   .barbers-hero-inner {
     margin: 0;
+  }
+
+  .scrolly-journey-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .journey-sticky-panel {
+    position: static;
+    top: auto;
+  }
+
+  .journey-card {
+    min-height: 300px;
   }
 
   .hero-visual {
@@ -1179,6 +1388,24 @@
     padding: 22px 18px;
   }
 
+  .journey-sticky-panel,
+  .journey-card {
+    padding: 20px;
+    border-radius: 22px;
+  }
+
+  .journey-progress-track {
+    height: 150px;
+  }
+
+  .journey-card {
+    min-height: auto;
+  }
+
+  .journey-card h3 {
+    font-size: clamp(1.6rem, 8vw, 2.3rem);
+  }
+
   .hero-visual {
     display: block;
     min-height: 420px;
@@ -1215,9 +1442,12 @@
   .hero-stage .hero-copy > *,
   .hero-stage .barbers-hero-inner > *,
   .hero-visual,
+  .scrollytell-card,
+  .journey-card,
   .showcase-main,
   .appointment-card,
   .service-card,
+  .journey-progress-fill,
   .background-orb,
   .interactive-card,
   .header-cta,

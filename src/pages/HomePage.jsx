@@ -1,5 +1,13 @@
+import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import Reveal from '../components/Reveal'
+import {
+  motion,
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+} from 'framer-motion'
 import {
   differenceCards,
   highlights,
@@ -10,10 +18,225 @@ import {
   testimonials,
 } from '../siteData'
 
+const scrollEase = [0.22, 1, 0.36, 1]
+const MotionSection = motion.section
+const MotionArticle = motion.article
+const MotionSpan = motion.span
+
+const journeyItems = [
+  ...processSteps.map((step) => ({
+    ...step,
+    tag: 'Service step',
+    highlights: [],
+  })),
+  {
+    step: '04',
+    title: 'City core coverage',
+    description:
+      'Downtown, Midtown, and Business District routes are designed for fast weekday grooming windows.',
+    tag: 'Coverage',
+    highlights: ['Downtown', 'Midtown', 'Business District'],
+  },
+  {
+    step: '05',
+    title: 'Hospitality coverage',
+    description:
+      'Hotel and private-home appointments are coordinated for travel schedules and premium convenience.',
+    tag: 'Coverage',
+    highlights: ['Hotels', 'Private Homes'],
+  },
+  {
+    step: '06',
+    title: 'Event coverage',
+    description: 'Group grooming blocks are available for weddings, teams, and private event timelines.',
+    tag: 'Coverage',
+    highlights: ['Events'],
+  },
+]
+
+function ScrollytellSection({ eyebrow, title, className = '', children }) {
+  const reducedMotion = useReducedMotion()
+
+  const motionProps = reducedMotion
+    ? {}
+    : {
+        initial: { opacity: 0, y: 70, scale: 0.965 },
+        whileInView: { opacity: 1, y: 0, scale: 1 },
+        viewport: { once: false, amount: 0.24 },
+        transition: { duration: 0.84, ease: scrollEase },
+      }
+
+  return (
+    <MotionSection className={`section-frame scrollytell-section ${className}`.trim()} {...motionProps}>
+      <div className="section-heading">
+        <p className="eyebrow">{eyebrow}</p>
+        <h2>{title}</h2>
+      </div>
+      {children}
+    </MotionSection>
+  )
+}
+
+function ScrollytellCard({ className = '', index = 0, children }) {
+  const reducedMotion = useReducedMotion()
+  const tiltFrom = index % 2 === 0 ? -9 : 9
+
+  const cardProps = reducedMotion
+    ? {}
+    : {
+        initial: { opacity: 0, y: 66, scale: 0.93, rotateX: 11, rotateY: tiltFrom },
+        whileInView: { opacity: 1, y: 0, scale: 1, rotateX: 0, rotateY: 0 },
+        viewport: { once: false, amount: 0.3 },
+        transition: { duration: 0.72, delay: index * 0.08, ease: scrollEase },
+      }
+
+  return (
+    <MotionArticle
+      className={`${className} scrollytell-card interactive-card`.trim()}
+      style={{ transformPerspective: 1200 }}
+      {...cardProps}
+    >
+      {children}
+    </MotionArticle>
+  )
+}
+
+function JourneyCard({ item, index, total, progress, isActive }) {
+  const reducedMotion = useReducedMotion()
+
+  const start = index / total
+  const midpoint = (index + 0.52) / total
+  const end = (index + 1) / total
+  const tiltFrom = index % 2 === 0 ? -8 : 8
+  const tiltTo = index % 2 === 0 ? 3 : -3
+
+  const opacity = useTransform(progress, [start, midpoint, end], [0.36, 1, 0.48])
+  const y = useTransform(progress, [start, midpoint, end], [72, 0, -48])
+  const scale = useTransform(progress, [start, midpoint, end], [0.92, 1, 0.96])
+  const rotateX = useTransform(progress, [start, midpoint, end], [12, 0, -8])
+  const rotateY = useTransform(progress, [start, midpoint, end], [tiltFrom, 0, tiltTo])
+
+  const motionStyle = reducedMotion
+    ? { transformPerspective: 1200 }
+    : { opacity, y, scale, rotateX, rotateY, transformPerspective: 1200 }
+
+  return (
+    <MotionArticle className={`journey-card interactive-card${isActive ? ' is-active' : ''}`} style={motionStyle}>
+      <div className="journey-card-meta">
+        <span className="journey-step">{item.step}</span>
+        <span className="journey-tag">{item.tag}</span>
+      </div>
+      <h3>{item.title}</h3>
+      <p>{item.description}</p>
+
+      {item.highlights.length ? (
+        <div className="journey-inline-pills">
+          {item.highlights.map((highlight) => (
+            <span key={highlight}>{highlight}</span>
+          ))}
+        </div>
+      ) : null}
+    </MotionArticle>
+  )
+}
+
+function StickyJourneySection() {
+  const sectionRef = useRef(null)
+  const reducedMotion = useReducedMotion()
+  const [activeIndex, setActiveIndex] = useState(0)
+  const total = journeyItems.length
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end end'],
+  })
+
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 28,
+    mass: 0.28,
+  })
+
+  useMotionValueEvent(scrollYProgress, 'change', (latest) => {
+    const nextIndex = Math.min(total - 1, Math.max(0, Math.floor(latest * total)))
+    setActiveIndex(nextIndex)
+  })
+
+  const activeItem = journeyItems[activeIndex] ?? journeyItems[0]
+  const progressLabel = `${String(activeIndex + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`
+
+  return (
+    <section ref={sectionRef} className="section-frame scrolly-journey">
+      <div className="section-heading">
+        <p className="eyebrow">How it works</p>
+        <h2>Scroll through the booking journey and coverage flow.</h2>
+      </div>
+
+      <div className="scrolly-journey-layout">
+        <aside className="journey-sticky-panel">
+          <div className="journey-progress-head">
+            <p>Journey progress</p>
+            <strong>{progressLabel}</strong>
+          </div>
+
+          <div className="journey-progress-track" aria-hidden="true">
+            <MotionSpan
+              className="journey-progress-fill"
+              style={reducedMotion ? { scaleY: 1 } : { scaleY: smoothProgress }}
+            />
+          </div>
+
+          <div className="journey-active-card">
+            <span className="journey-step">{activeItem.step}</span>
+            <h3>{activeItem.title}</h3>
+            <p>{activeItem.description}</p>
+          </div>
+
+          <div className="journey-coverage-pills">
+            {serviceAreas.map((area) => (
+              <span key={area}>{area}</span>
+            ))}
+          </div>
+        </aside>
+
+        <div className="journey-scroll-stack">
+          {journeyItems.map((item, index) => (
+            <JourneyCard
+              key={`${item.step}-${item.title}`}
+              item={item}
+              index={index}
+              total={total}
+              progress={smoothProgress}
+              isActive={activeIndex === index}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function HomePage() {
+  const heroRef = useRef(null)
+  const reducedMotion = useReducedMotion()
+  const { scrollYProgress: heroProgress } = useScroll({
+    target: heroRef,
+    offset: ['start start', 'end start'],
+  })
+
+  const heroY = useTransform(heroProgress, [0, 1], [0, -70])
+  const heroOpacity = useTransform(heroProgress, [0, 1], [1, 0.45])
+  const heroScale = useTransform(heroProgress, [0, 1], [1, 0.965])
+
+  const heroStyle = reducedMotion ? undefined : { y: heroY, opacity: heroOpacity, scale: heroScale }
+
   return (
     <>
-      <section className="hero-section hero-single section-frame hero-stage">
+      <MotionSection
+        ref={heroRef}
+        className="hero-section hero-single section-frame hero-stage scrollytell-hero"
+        style={heroStyle}
+      >
         <div className="hero-copy">
           <p className="eyebrow">Mobile barber booking</p>
           <h1>
@@ -35,64 +258,44 @@ function HomePage() {
           </div>
 
           <div className="hero-stats">
-            {highlights.map((item) => (
-              <article key={item.label} className="stat-card">
+            {highlights.map((item, index) => (
+              <ScrollytellCard key={item.label} className="stat-card" index={index}>
                 <strong>{item.value}</strong>
                 <span>{item.label}</span>
-              </article>
+              </ScrollytellCard>
             ))}
           </div>
         </div>
+      </MotionSection>
 
-      </section>
-
-      <Reveal as="section" className="section-frame" variant="up">
-        <div className="section-heading">
-          <p className="eyebrow">Explore Beauvia</p>
-          <h2>Move through the site page by page, just like the reference you shared.</h2>
-        </div>
-
-        <div className="preview-grid">
+      <ScrollytellSection
+        eyebrow="Explore Beauvia"
+        title="Move through the site page by page in a smooth, scroll-led flow."
+      >
+        <div className="preview-grid scrollytell-grid">
           {previewPages.map((item, index) => (
-            <Reveal
-              key={item.title}
-              as="article"
-              className="story-card interactive-card"
-              variant={index % 2 === 0 ? 'left' : 'right'}
-              delay={index * 90}
-            >
+            <ScrollytellCard key={item.title} className="story-card" index={index}>
               <h3>{item.title}</h3>
               <p>{item.description}</p>
               <Link className="inline-link" to={item.to}>
                 {item.action}
               </Link>
-            </Reveal>
+            </ScrollytellCard>
           ))}
         </div>
-      </Reveal>
+      </ScrollytellSection>
 
-      <Reveal as="section" className="section-frame" variant="up">
-        <div className="section-heading">
-          <p className="eyebrow">Featured services</p>
-          <h2>Choose the grooming experience that fits your day.</h2>
-        </div>
-
-        <div className="services-grid compact-grid">
+      <ScrollytellSection eyebrow="Featured services" title="Choose the grooming experience that fits your day.">
+        <div className="services-grid compact-grid scrollytell-grid">
           {services.slice(0, 3).map((service, index) => (
-            <Reveal
-              key={service.title}
-              as="article"
-              className="service-tile interactive-card"
-              variant={index % 2 === 0 ? 'left' : 'right'}
-              delay={index * 90}
-            >
+            <ScrollytellCard key={service.title} className="service-tile" index={index}>
               <div className="service-meta">
                 <span className="service-price">{service.price}</span>
                 <span className="service-duration">{service.duration}</span>
                 <h3>{service.title}</h3>
               </div>
               <p>{service.description}</p>
-            </Reveal>
+            </ScrollytellCard>
           ))}
         </div>
 
@@ -101,94 +304,34 @@ function HomePage() {
             View All Services
           </Link>
         </div>
-      </Reveal>
+      </ScrollytellSection>
 
-      <Reveal as="section" className="section-frame" variant="up">
-        <div className="section-heading">
-          <p className="eyebrow">Why Beauvia</p>
-          <h2>A premium service model built around time, trust, and consistent results.</h2>
-        </div>
-
-        <div className="cards-grid">
+      <ScrollytellSection eyebrow="Why Beauvia" title="A premium service model built around time and trust.">
+        <div className="cards-grid scrollytell-grid">
           {differenceCards.map((item, index) => (
-            <Reveal
-              key={item.title}
-              as="article"
-              className="detail-card interactive-card"
-              variant={index % 2 === 0 ? 'left' : 'right'}
-              delay={index * 90}
-            >
+            <ScrollytellCard key={item.title} className="detail-card" index={index}>
               <h3>{item.title}</h3>
               <p>{item.description}</p>
-            </Reveal>
+            </ScrollytellCard>
           ))}
         </div>
-      </Reveal>
+      </ScrollytellSection>
 
-      <Reveal as="section" className="section-frame" variant="up">
-        <div className="experience-grid">
-          <Reveal as="div" className="experience-panel interactive-card" variant="left" delay={60}>
-            <h3>How it works</h3>
-            <div className="step-list">
-              {processSteps.map((step) => (
-                <article key={step.step} className="step-card">
-                  <span>{step.step}</span>
-                  <div>
-                    <h4>{step.title}</h4>
-                    <p>{step.description}</p>
-                  </div>
-                </article>
-                ))}
-            </div>
-          </Reveal>
+      <StickyJourneySection />
 
-          <Reveal as="div" className="experience-panel interactive-card" variant="right" delay={140}>
-            <h3>Service areas</h3>
-            <p className="panel-copy">
-              Beauvia is designed for busy schedules and private spaces. We currently focus on:
-            </p>
-            <div className="pill-list">
-              {serviceAreas.map((area) => (
-                <span key={area}>{area}</span>
-              ))}
-            </div>
-            <div className="route-card">
-              <strong>Hours</strong>
-              <p>Monday to Sunday</p>
-              <p>9:00 AM to 10:00 PM</p>
-            </div>
-          </Reveal>
-        </div>
-      </Reveal>
-
-      <Reveal as="section" className="section-frame" variant="up">
-        <div className="section-heading">
-          <p className="eyebrow">Client feedback</p>
-          <h2>Trusted by clients who want grooming without interruption.</h2>
-        </div>
-
-        <div className="testimonials-grid">
+      <ScrollytellSection eyebrow="Client feedback" title="Trusted by clients who want grooming without interruption.">
+        <div className="testimonials-grid scrollytell-grid">
           {testimonials.map((item, index) => (
-            <Reveal
-              key={item.author}
-              as="article"
-              className="testimonial-card interactive-card"
-              variant={index % 2 === 0 ? 'left' : 'right'}
-              delay={index * 90}
-            >
+            <ScrollytellCard key={item.author} className="testimonial-card" index={index}>
               <p>"{item.quote}"</p>
               <strong>{item.author}</strong>
               <span>{item.role}</span>
-            </Reveal>
+            </ScrollytellCard>
           ))}
         </div>
-      </Reveal>
+      </ScrollytellSection>
 
-      <Reveal as="section" className="cta-banner section-frame" variant="zoom">
-        <div>
-          <p className="eyebrow">Next move</p>
-          <h2>Book a visit or join the barber network.</h2>
-        </div>
+      <ScrollytellSection eyebrow="Next move" title="Book a visit or join the barber network." className="cta-banner">
         <div className="hero-actions">
           <Link className="primary-button" to="/booking">
             Book Now
@@ -197,7 +340,7 @@ function HomePage() {
             Join as a Barber
           </Link>
         </div>
-      </Reveal>
+      </ScrollytellSection>
     </>
   )
 }
