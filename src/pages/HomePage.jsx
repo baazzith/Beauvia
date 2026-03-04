@@ -31,26 +31,11 @@ const journeyItems = [
   })),
   {
     step: '04',
-    title: 'City core coverage',
+    title: 'Coverage zones',
     description:
-      'Downtown, Midtown, and Business District routes are designed for fast weekday grooming windows.',
+      'Downtown, Midtown, Business District, hotels, homes, and event spaces are covered in one route-ready flow.',
     tag: 'Coverage',
-    highlights: ['Downtown', 'Midtown', 'Business District'],
-  },
-  {
-    step: '05',
-    title: 'Hospitality coverage',
-    description:
-      'Hotel and private-home appointments are coordinated for travel schedules and premium convenience.',
-    tag: 'Coverage',
-    highlights: ['Hotels', 'Private Homes'],
-  },
-  {
-    step: '06',
-    title: 'Event coverage',
-    description: 'Group grooming blocks are available for weddings, teams, and private event timelines.',
-    tag: 'Coverage',
-    highlights: ['Events'],
+    highlights: ['Downtown', 'Midtown', 'Business District', 'Hotels', 'Private Homes', 'Events'],
   },
 ]
 
