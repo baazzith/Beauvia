@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 220" role="img" aria-labelledby="title desc">
+  <title id="title">Beauvia logo</title>
+  <desc id="desc">Beauvia brand logo with icon and wordmark</desc>
+  <defs>
+    <linearGradient id="beauviaGradWide" x1="10%" y1="92%" x2="90%" y2="12%">
+      <stop offset="0%" stop-color="#2357da" />
+      <stop offset="100%" stop-color="#13d2d8" />
+    </linearGradient>
+  </defs>
+  <g transform="translate(22,20)">
+    <path
+      fill="url(#beauviaGradWide)"
+      d="M26 0h70c30 0 54 24 54 54 0 16-7 30-19 39 12 9 19 23 19 39 0 30-24 54-54 54H26z"
+    />
+    <path
+      d="M53 24h33c16 0 30 13 30 29s-14 29-30 29h-9M53 24l18 46-18 62M75 78l54-22M73 110l-8 26M85 118l40 32"
+      fill="none"
+      stroke="#f8fbff"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="8"
+    />
+    <circle cx="94" cy="53" r="6" fill="#f8fbff" />
+  </g>
+  <text
+    x="226"
+    y="141"
+    fill="#1c2746"
+    font-family="Outfit, Avenir Next, Segoe UI, Arial, sans-serif"
+    font-size="92"
+    font-weight="500"
+    letter-spacing="12"
+  >
+    BEAUVIA
+  </text>
+</svg>

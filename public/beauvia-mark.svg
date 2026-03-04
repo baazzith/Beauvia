@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" role="img" aria-labelledby="title desc">
+  <title id="title">Beauvia logo mark</title>
+  <desc id="desc">Gradient B lettermark with barber tool line art</desc>
+  <defs>
+    <linearGradient id="beauviaGrad" x1="10%" y1="92%" x2="90%" y2="12%">
+      <stop offset="0%" stop-color="#2357da" />
+      <stop offset="100%" stop-color="#13d2d8" />
+    </linearGradient>
+  </defs>
+  <path
+    fill="url(#beauviaGrad)"
+    d="M34 18h70c30 0 54 24 54 54 0 16-7 30-19 39 12 9 19 23 19 39 0 30-24 54-54 54H34z"
+  />
+  <path
+    d="M61 42h33c16 0 30 13 30 29s-14 29-30 29h-9M61 42l18 46-18 62M83 96l54-22M81 128l-8 26M93 136l40 32"
+    fill="none"
+    stroke="#f8fbff"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="8"
+  />
+  <circle cx="102" cy="71" r="6" fill="#f8fbff" />
+</svg>
