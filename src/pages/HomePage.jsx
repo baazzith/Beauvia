@@ -13,7 +13,7 @@ import {
 function HomePage() {
   return (
     <>
-      <section className="hero-section section-frame hero-stage">
+      <section className="hero-section hero-single section-frame hero-stage">
         <div className="hero-copy">
           <p className="eyebrow">Mobile barber booking</p>
           <h1>
@@ -44,40 +44,6 @@ function HomePage() {
           </div>
         </div>
 
-        <div className="hero-visual" aria-hidden="true">
-          <div className="showcase-card showcase-main">
-            <div className="showcase-topline">
-              <span className="status-pill">Now booking</span>
-              <span>Doorstep grooming</span>
-            </div>
-
-            <div className="showcase-screen">
-              <div className="screen-badge">Premium mobile barber</div>
-              <div className="screen-title">
-                Your chair.
-                <br />
-                Our craft.
-              </div>
-              <div className="screen-lines">
-                <span />
-                <span />
-                <span />
-              </div>
-            </div>
-          </div>
-
-          <div className="showcase-card floating-card appointment-card">
-            <p>Next arrival</p>
-            <strong>Today, 6:30 PM</strong>
-            <span>Haircut + Beard at Midtown</span>
-          </div>
-
-          <div className="showcase-card floating-card service-card">
-            <p>Most booked</p>
-            <strong>Signature Fade</strong>
-            <span>Clean taper, lineup, style finish</span>
-          </div>
-        </div>
       </section>
 
       <Reveal as="section" className="section-frame" variant="up">

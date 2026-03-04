@@ -258,6 +258,11 @@
   min-height: 760px;
 }
 
+.hero-section.hero-single {
+  grid-template-columns: minmax(0, 1fr);
+  min-height: auto;
+}
+
 .hero-stage::before {
   content: '';
   position: absolute;

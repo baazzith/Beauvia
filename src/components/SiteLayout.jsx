@@ -22,9 +22,11 @@ function SiteLayout() {
         </NavLink>
 
         <div className="header-actions">
-          <NavLink className="header-cta" to="/booking">
-            Book Now
-          </NavLink>
+          {pathname === '/' ? (
+            <NavLink className="header-cta" to="/booking">
+              Book Now
+            </NavLink>
+          ) : null}
 
           <button
             className={`menu-toggle${menuOpen ? ' is-open' : ''}`}

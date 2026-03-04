@@ -11,14 +11,9 @@ function AboutPage() {
         title="About Beauvia"
         description="Beauvia was built for people who want the quality of a premium barber visit without the commute, wait time, or friction of a traditional shop visit."
         actions={
-          <>
-            <Link className="primary-button" to="/booking">
-              Book an Appointment
-            </Link>
-            <Link className="secondary-button" to="/services">
-              See Services
-            </Link>
-          </>
+          <Link className="secondary-button" to="/services">
+            See Services
+          </Link>
         }
         aside={
           <div className="hero-note-card">
